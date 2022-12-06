@@ -1,13 +1,17 @@
 from django.db import models
-
+import datetime
 # Create your models here.
 
 class Currency(models.Model):
-    name = models.CharField(max_length=25)
-    price = models.FloatField()
-    updated_date =models.DateTimeField()
-    country = models.CharField(max_length=35)
-    
+    name = models.CharField(max_length=30)
+    code = models.CharField(max_length=3)
+    price = models.IntegerField()
+    rate = models.CharField(max_length=20)
+    high = models.IntegerField()
+    low = models.IntegerField()
+    updated_date = models.TimeField()
+    requested_date = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return self.name
 
