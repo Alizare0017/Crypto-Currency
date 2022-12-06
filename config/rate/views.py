@@ -3,7 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from rate.models import Currency
-from rate.serializer import CurrencySerializer
+from rate.serializer import CurrencySerializer , TeseSerializer
+from django.http import QueryDict
 
 # Create your views here.
 
@@ -23,3 +24,16 @@ class RateView(APIView):
             return Response(status=status.HTTP_200_OK)
         else :
             return Response(status=status.HTTP_400_BAD_REQUEST, data={'errors':serializer.errors})
+    
+
+class TestView(APIView):
+
+    def post(self,request):
+        ordinary_dict = {}
+        print(type(request), request.data)
+        serializer = TeseSerializer(data=ordinary_dict)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_200_OK)
+        else :
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={'errors':serializer.errors}) 
