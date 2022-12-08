@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from rate.models import Currency, Test
+from rate.models import Currency, Gold
 
 
 class CurrencySerializer(serializers.ModelSerializer):
@@ -8,9 +8,8 @@ class CurrencySerializer(serializers.ModelSerializer):
         model = Currency
         fields = '__all__'
 
-class TeseSerializer(serializers.ModelSerializer):
-
+class GoldSerializer(serializers.ModelSerializer):
+    
     class Meta:
-
-        model = Test
+        model = Gold
         fields = '__all__'
