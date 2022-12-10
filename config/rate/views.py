@@ -14,7 +14,7 @@ from .models import Currency, Gold
 class RateView(APIView):
     
     def get(self,request):
-        if request.data['type'] == 'currecy' :
+        if request.data['type'] == 'currency' :
             currency = Currency.objects.all()
             serializer = CurrencySerializer(currency, many=True)
             return Response(status=status.HTTP_200_OK, data=serializer.data)
@@ -38,10 +38,9 @@ class RateView(APIView):
                 obj['code'] = 'asd'
                 serializer = GoldSerializer(data=obj)
                 if serializer.is_valid():
-                    serializer.save()
-                    # Gold.objects.filter(code=obj['code']).update(price=obj['price'],rate=obj['rate'],high=obj['high'],
-                    #                                                 low=obj['low'],updated_date=obj['updated_date'],
-                    #                                                 requested_date=timezone.now())
+                    Gold.objects.filter(code=obj['code']).update(price=obj['price'],rate=obj['rate'],high=obj['high'],
+                                                                    low=obj['low'],updated_date=obj['updated_date'],
+                                                                    requested_date=timezone.now())
                 else :
                     return Response(status=status.HTTP_400_BAD_REQUEST, data={'errors':serializer.errors})
             return Response(status=status.HTTP_200_OK)

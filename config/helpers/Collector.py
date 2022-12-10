@@ -81,5 +81,4 @@ def currencyLeech(RateType):
         result_dict['low'] = result_dict.get('low').replace(',','')
         result_dict['requested_date'] = JalaliDateTime.now().isoformat()
         result_list.append(result_dict)
-        print(result_list)
     return result_list
