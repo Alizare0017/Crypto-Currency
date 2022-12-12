@@ -2,6 +2,7 @@ import mechanicalsoup
 from bs4 import BeautifulSoup
 from persiantools.jdatetime import JalaliDateTime, JalaliDate
 import re
+import requests
 
 month_dict = {'فروردین':'01', 'اردیبهشت':'02', 'خرداد':'03', 'تیر':'04', 'مرداد':'05',
          'شهریور':'06', 'مهر':'07', 'آبان':'08', 'آذر':'09', 'دی':'10', 'بهمن':'11', 'اسفند':'12'}
@@ -32,6 +33,25 @@ gold_code = {'طلای 18 عیار / 750':'gold18/750', 'طلای 18 عیار / 
                'صندوق طلای مفید':'mofidgold', 'صندوق طلای لوتوس':'lotosgold', 'صندوق طلای زر':'rosegold',
                 'گرم نقره ۹۹۹':'silver'}
 
+def p2e(persiannumber):    
+    number={
+        '0':'۰',
+        '1':'۱',
+        '2':'۲',
+        '3':'۳',
+        '4':'۴',
+        '5':'۵',
+        '6':'۶',
+        '7':'۷',
+        '8':'۸',
+        '9':'۹',
+        ':':':',
+    }
+    for i,j in number.items():
+        persiannumber=persiannumber.replace(j,i)
+    
+    return persiannumber
+
 def currencyLeech(RateType):
     result_list = list()
     regex = r"(\d{2}):(\d{2}):(\d{2})"
@@ -47,25 +67,6 @@ def currencyLeech(RateType):
     result = soup.find_all(attrs={'class':'pointer'})    
     currency_info = ['name','price', 'rate','low', 'high', 'updated_date']
     
-    def p2e(persiannumber):    
-        number={
-            '0':'۰',
-            '1':'۱',
-            '2':'۲',
-            '3':'۳',
-            '4':'۴',
-            '5':'۵',
-            '6':'۶',
-            '7':'۷',
-            '8':'۸',
-            '9':'۹',
-            ':':':',
-        }
-        for i,j in number.items():
-            persiannumber=persiannumber.replace(j,i)
-        
-        return persiannumber
-    
     for tag in result :
         res = tag.text.strip().split('\n')[0:]
         result_dict = dict(zip(currency_info, res))
@@ -75,6 +76,7 @@ def currencyLeech(RateType):
         else :
             date = result_dict['updated_date'].split()
             result_dict['updated_date'] = str(JalaliDate.today().strftime('%Y'))+'-'+ month_dict[date[1]]+'-'+ p2e(date[0])
+
         result_dict['code'] = dictionary[result_dict['name']]
         result_dict['price'] = result_dict.get('price').replace(',','')
         result_dict['high'] = result_dict.get('high').replace(',','')
@@ -82,3 +84,27 @@ def currencyLeech(RateType):
         result_dict['requested_date'] = JalaliDateTime.now().isoformat()
         result_list.append(result_dict)
     return result_list
+
+
+def cryptoLeech(): 
+    crypto_list = list()
+    browser = mechanicalsoup.Browser()
+    url = "https://arzdigital.com/coins/"
+    page = browser.get(url)
+    soup = BeautifulSoup(page.content, "html.parser")
+    result = soup.find_all("tr")[1:]
+    
+    for tag in result :
+        input_tag = tag.findAll('td')
+        crypto_dict = {}
+        for attr in input_tag :
+            try :
+                crypto_dict[attr['data-sort-name']] = attr['data-sort-value']
+            except :
+                pass
+        #print(type(crypto_dict.get('price')))
+        crypto_dict['rial_price'] = crypto_dict.pop('rial-price')
+        crypto_dict['daily_swing'] = crypto_dict.pop('daily-swing')
+        crypto_dict['weekly_swing'] = crypto_dict.pop('weekly-swing')
+        crypto_list.append(crypto_dict)
+    return crypto_list

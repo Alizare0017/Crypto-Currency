@@ -26,3 +26,18 @@ class Gold(models.Model):
 
     def __str__(self):
         return self.name
+
+class Crypto(models.Model):
+    name = models.CharField(max_length=20)
+    price = models.FloatField(default=0)
+    rial_price = models.FloatField(null=True)
+    marketcap = models.IntegerField()
+    volume = models.IntegerField()
+    daily_swing = models.FloatField()
+    weekly_swing = models.FloatField()
+    rank = models.IntegerField()
+    requested_date = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return self.name

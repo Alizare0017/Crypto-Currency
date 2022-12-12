@@ -4,9 +4,9 @@ from rest_framework import status
 from django.utils import timezone
 
 from rate.models import Currency
-from rate.serializer import CurrencySerializer, GoldSerializer
-from helpers.Collector import currencyLeech
-from .models import Currency, Gold
+from rate.serializer import CurrencySerializer, GoldSerializer, CryptoSerializer
+from helpers.Collector import currencyLeech, cryptoLeech
+from .models import Currency, Gold, Crypto
 
 
 # Create your views here.
@@ -35,12 +35,11 @@ class RateView(APIView):
                 else :
                     return Response(status=status.HTTP_400_BAD_REQUEST, data={'errors':serializer.errors})
             if request.data['type'] == 'gold' :
-                obj['code'] = 'asd'
                 serializer = GoldSerializer(data=obj)
                 if serializer.is_valid():
                     Gold.objects.filter(code=obj['code']).update(price=obj['price'],rate=obj['rate'],high=obj['high'],
-                                                                    low=obj['low'],updated_date=obj['updated_date'],
-                                                                    requested_date=timezone.now())
+                                                                    low=obj['low'],requested_date=timezone.now()
+                                                                    ,updated_date=obj['updated_date'])
                 else :
                     return Response(status=status.HTTP_400_BAD_REQUEST, data={'errors':serializer.errors})
             return Response(status=status.HTTP_200_OK)
@@ -65,4 +64,36 @@ class RateView(APIView):
                 else:
                     return Response(status=status.HTTP_400_BAD_REQUEST, data={'errors':serializer.errors})
 
+        return Response(status=status.HTTP_200_OK)
+
+class CryptoView(APIView):
+
+    def post(self,request):
+        cryptoleech = cryptoLeech()
+        for obj in cryptoleech :
+            serializer = CryptoSerializer(data=obj)
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST, data={'errors':serializer.errors})
+        return Response(status=status.HTTP_200_OK)
+
+
+    def get(self,request):
+        crypto = Crypto.objects.all()
+        serializer = CryptoSerializer(crypto, many=True)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+
+    def put(self,request):
+        cryptoleech = cryptoLeech()
+        for obj in cryptoleech:
+            serializer = CryptoSerializer(data=obj)
+            if serializer.is_valid():
+                Crypto.objects.filter(rank=obj['rank']).update(price=obj['price'],name=obj['name'],rial_price=obj['rial_price'],
+                                                                marketcap=obj['marketcap'],volume=obj['volume'],
+                                                                requested_date=timezone.now(), daily_swing=obj['daily_swing'],
+                                                                weekly_swing=obj['weekly_swing'],rank=obj['rank'])
+            else:
+              return Response(status=status.HTTP_400_BAD_REQUEST, data={'errors':serializer.errors})
         return Response(status=status.HTTP_200_OK)
