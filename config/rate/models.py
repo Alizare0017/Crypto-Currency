@@ -10,6 +10,7 @@ class Currency(models.Model):
     low = models.IntegerField()
     updated_date = models.DateTimeField()
     requested_date = models.DateTimeField(auto_now_add=True)
+    time_stamp = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -23,12 +24,14 @@ class Gold(models.Model):
     low = models.IntegerField()
     updated_date = models.DateTimeField()
     requested_date = models.DateTimeField(auto_now_add=True)
+    time_stamp = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
 
 class Crypto(models.Model):
     name = models.CharField(max_length=20)
+    code = models.CharField(max_length=6, default='a')
     price = models.FloatField(default=0)
     rial_price = models.FloatField(null=True)
     marketcap = models.IntegerField()

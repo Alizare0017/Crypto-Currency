@@ -6,4 +6,3 @@ urlpatterns = [
     path('gold/', views.RateView.as_view(), name='gold'),
     path('crypto/', views.CryptoView.as_view(), name='crypto'),
 ]
-        
