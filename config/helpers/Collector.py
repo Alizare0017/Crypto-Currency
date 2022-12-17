@@ -90,8 +90,6 @@ def currencyLeech(RateType):
             s_datetime = datetime.datetime.strptime(date_miladi, '%Y-%m-%d %H:%M:%S')
             time_tuple = s_datetime.timetuple()
             result_dict['time_stamp'] = calendar.timegm(time_tuple)
-            print(calendar.timegm(time_tuple))
-
             result_dict['updated_date'] = date_jalali
 
         else :
@@ -132,5 +130,4 @@ def cryptoLeech():
         crypto_dict['weekly_swing'] = crypto_dict.pop('weekly-swing')
         crypto_list.append(crypto_dict)
     return crypto_list
-
-cryptoLeech()
+  

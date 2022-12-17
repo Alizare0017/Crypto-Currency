@@ -17,7 +17,6 @@ class ListRegisterUserView(APIView):
 
     def post(self, request):
         serializer = cs.RegisterUserSerializer(data=request.data)
-
         if serializer.is_valid():
             try:
                 user = User.objects.create_user(**serializer.data, role=User.COMMON)
@@ -25,7 +24,6 @@ class ListRegisterUserView(APIView):
                 return response(status.HTTP_400_BAD_REQUEST, errors=str(e))
             return response(status.HTTP_201_CREATED, instance=user, serializer=cs.UserSerializer)
         return response(status.HTTP_400_BAD_REQUEST, errors=serializer.errors)
-
 
 
 class LoginView(APIView):

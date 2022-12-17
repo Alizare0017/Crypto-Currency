@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
-
+from helpers.generator import Token_Generator
 from django.conf import settings
 
 
@@ -19,7 +19,7 @@ class User(AbstractUser):
 
     is_phone_activated = models.BooleanField(default=False)
     is_email_activated = models.BooleanField(default=False)
-
+    token = models.CharField(max_length=40,default=Token_Generator,unique=True)
     @property
     def is_permium(self):
         return self.role == self.PERMIUM
