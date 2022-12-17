@@ -14,6 +14,7 @@ from .models import Currency, Gold, Crypto
 # Create your views here.
 
 class Manager(APIView):
+    permission_classes = [IsAdminUser]
     def post(self,request,name):
         currencyleech = currencyLeech(name)
         if name == 'gold' :

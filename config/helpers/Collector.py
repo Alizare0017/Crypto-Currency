@@ -68,8 +68,6 @@ def timestamp(y,m,d):
 def currencyLeech(RateType):
     result_list = list()
     regex = r"(\d{2}):(\d{2}):(\d{2})"
-    
-    
     browser = mechanicalsoup.Browser()
     if RateType == 'gold' :
         url = "https://www.tgju.org/" + RateType + '-chart'
@@ -77,12 +75,16 @@ def currencyLeech(RateType):
         url = "https://www.tgju.org/" + RateType
     page = browser.get(url)
     soup = BeautifulSoup(page.content, "html.parser")
-    result = soup.find_all(attrs={'class':'pointer'})    
+    result = soup.find_all(attrs={'class':'pointer'})
     currency_info = ['name','price', 'rate','low', 'high', 'updated_date']
     
+
+
     for tag in result :
+
         res = tag.text.strip().split('\n')[0:]
         result_dict = dict(zip(currency_info, res))
+        print(res, result_dict, tag.text)
         
         if re.fullmatch(regex,result_dict['updated_date']) :
             date_jalali = str(JalaliDate.today())+' '+p2e(result_dict['updated_date'])
@@ -130,4 +132,3 @@ def cryptoLeech():
         crypto_dict['weekly_swing'] = crypto_dict.pop('weekly-swing')
         crypto_list.append(crypto_dict)
     return crypto_list
-  
