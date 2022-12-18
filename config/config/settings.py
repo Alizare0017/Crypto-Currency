@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rate.apps.RateConfig',
     'users.apps.UsersConfig',
+    'update.apps.UpdateConfig',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_swagger',
@@ -150,7 +151,7 @@ PASSWORD_REGEX = r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
 
 # (username is 8-50 characters long), (no _ or . at the beginning),
 # (no __ or _. or ._ or .. inside), (allowed characters), (no _ or . at the end)
-USERNAME_REGEX = r"^(?=.{8,50}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$"
+USERNAME_REGEX = r"^(?=.{6,50}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$"
 
 
 REST_FRAMEWORK = {

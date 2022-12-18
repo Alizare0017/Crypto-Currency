@@ -35,7 +35,7 @@ dictionary = {
             'NEAR Protocol':'NEAR', 'OKB':'OKB', 'Hedera':'HBAR', 'Internet Computer':'ICP', 'Trust Wallet Token':'TWT',
             'EOS':'EOS', 'MultiversX (Elrond)':'EGLD', 'Terra Classic':'LUNC', 'Flow':'FLOW', 'Huobi Token':'HT',
             'Pax Dollar':'USDP', 'Tezos':'XTZ', 'Chiliz':'CHZ', 'Bitcoin SV':'BSV', 'The Sandbox':'SAND',
-            'Aave':'AAVE', 'Theta Network':'THETA',
+            'Aave':'AAVE', 'Theta Network':'THETA','TrueUSD':'TUSD',
             }
 
 def p2e(persiannumber):    
