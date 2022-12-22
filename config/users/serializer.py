@@ -6,7 +6,8 @@ from helpers.regex_validators import validators
 
 class UserSerializer(serializers.ModelSerializer):
     is_common = serializers.CharField(default=User.is_common)
-    is_permium = serializers.CharField(default=User.is_permium)
+    is_permium = serializers.CharField(default=User.is_planA)
+    is_permium = serializers.CharField(default=User.is_planB)
 
     class Meta:
         model = User

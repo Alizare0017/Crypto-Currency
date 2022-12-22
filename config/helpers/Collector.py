@@ -35,7 +35,7 @@ dictionary = {
             'NEAR Protocol':'NEAR', 'OKB':'OKB', 'Hedera':'HBAR', 'Internet Computer':'ICP', 'Trust Wallet Token':'TWT',
             'EOS':'EOS', 'MultiversX (Elrond)':'EGLD', 'Terra Classic':'LUNC', 'Flow':'FLOW', 'Huobi Token':'HT',
             'Pax Dollar':'USDP', 'Tezos':'XTZ', 'Chiliz':'CHZ', 'Bitcoin SV':'BSV', 'The Sandbox':'SAND',
-            'Aave':'AAVE', 'Theta Network':'THETA','TrueUSD':'TUSD',
+            'Aave':'AAVE', 'Theta Network':'THETA','TrueUSD':'TUSD','USDD':'USDD',
             }
 
 def p2e(persiannumber):    
@@ -84,7 +84,6 @@ def currencyLeech(RateType):
 
         res = tag.text.strip().split('\n')[0:]
         result_dict = dict(zip(currency_info, res))
-        print(res, result_dict, tag.text)
         
         if re.fullmatch(regex,result_dict['updated_date']) :
             date_jalali = str(JalaliDate.today())+' '+p2e(result_dict['updated_date'])
@@ -93,6 +92,7 @@ def currencyLeech(RateType):
             time_tuple = s_datetime.timetuple()
             result_dict['time_stamp'] = calendar.timegm(time_tuple)
             result_dict['updated_date'] = date_jalali
+            print(result_dict['updated_date'])
 
         else :
             date1 = result_dict['updated_date'].split()

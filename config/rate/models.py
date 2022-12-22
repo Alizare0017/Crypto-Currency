@@ -41,6 +41,18 @@ class Crypto(models.Model):
     rank = models.IntegerField()
     requested_date = models.DateTimeField(auto_now_add=True)
 
-
     def __str__(self):
+        return self.name
+
+
+class Plan(models.Model):
+
+    name = models.CharField(max_length=10)
+    daily_request_limit = models.IntegerField()
+    month_limit = models.IntegerField()
+    currency = models.BooleanField()
+    gold = models.BooleanField()
+    crypto = models.BooleanField()
+    
+    def __srt__(self):
         return self.name

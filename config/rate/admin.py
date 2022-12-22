@@ -1,5 +1,5 @@
 from django.contrib import admin
-from rate.models import Currency, Gold, Crypto
+from rate.models import Currency, Gold, Crypto, Plan
 # Register your models here.
 
 class CurrencyAdmin(admin.ModelAdmin):
@@ -15,3 +15,4 @@ class CryptoAdmin(admin.ModelAdmin):
 admin.site.register(Currency, CurrencyAdmin)
 admin.site.register(Gold, GoldAdmin)
 admin.site.register(Crypto, CryptoAdmin)
+admin.site.register(Plan)

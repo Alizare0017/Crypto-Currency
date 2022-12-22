@@ -1,10 +1,9 @@
 from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-from helpers.general import response, unauthorized, logout
+from helpers.general import response, unauthorized
 from django.shortcuts import get_object_or_404
 from django.db.utils import IntegrityError
 from django.contrib.auth import login
