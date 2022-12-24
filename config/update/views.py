@@ -21,6 +21,8 @@ class GoldManage(APIView):
                 serializer.save()
             else:
                 return Response(status=status.HTTP_400_BAD_REQUEST, data={'errors':serializer.errors})
+        return Response(status=status.HTTP_200_OK)    
+
 
     def put(self,request):
         currencyleech = currencyLeech('gold')
@@ -49,6 +51,7 @@ class CurrencyManage(APIView):
                     serializer.save()
                 else:
                     return Response(status=status.HTTP_400_BAD_REQUEST, data={'errors':serializer.errors})
+        return Response(status=status.HTTP_200_OK)
 
     def put(self,request):
         currencyleech = currencyLeech('currency')

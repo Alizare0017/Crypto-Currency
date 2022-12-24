@@ -7,17 +7,15 @@ from rate.models import Plan
 
 class User(AbstractUser):
     COMMON = "COMMON"
-    planA = "planA"
-    planB = "planB"
+    PREMIUM = "PREMIUM"
     role_choices = (
         (COMMON, "common"),
-        (planA, "a"),
-        (planB, "b"),
+        (PREMIUM, "premium"),
     )
     phone = models.CharField(
         max_length=13, validators=[RegexValidator(regex=settings.PHONE_REGEX)], null=True, blank=True
     )
-    #plan = models.CharField(max_length=8, choices=role_choices, null=True, blank=True)
+    role = models.CharField(max_length=8, choices=role_choices, null=True, blank=True, default=COMMON)
 
     is_phone_activated = models.BooleanField(default=False)
     is_email_activated = models.BooleanField(default=False)

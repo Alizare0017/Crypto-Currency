@@ -1,3 +1,6 @@
+from  datetime import datetime, timedelta, timezone
+from users.models import User
+
 def get_req_and_kwarg(args: tuple, kwargs: dict, kw: str):
     """
     get the request object from pos-arguments and kw from keyword-arguments from decorated functions.
@@ -7,3 +10,15 @@ def get_req_and_kwarg(args: tuple, kwargs: dict, kw: str):
     if not kw:
         return args[1], None
     return args[1], kwargs.get(kw)
+
+
+
+def permission_validtor(month_exp,request_count,daily_limit,user):
+    if month_exp >= datetime.now(timezone.utc):
+        if request_count <= daily_limit:
+            return True
+            
+        else:
+            LimitError = "to match request for today"
+            return LimitError
+    return ValueError

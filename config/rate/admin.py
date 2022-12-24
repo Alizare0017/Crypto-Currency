@@ -11,8 +11,11 @@ class GoldAdmin(admin.ModelAdmin):
 class CryptoAdmin(admin.ModelAdmin):
     list_display = ['id','name','rial_price','price', 'requested_date']
 
+class PlanAdmin(admin.ModelAdmin):
+    list_display = ['id','name']
+
 
 admin.site.register(Currency, CurrencyAdmin)
 admin.site.register(Gold, GoldAdmin)
 admin.site.register(Crypto, CryptoAdmin)
-admin.site.register(Plan)
+admin.site.register(Plan, PlanAdmin)
