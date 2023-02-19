@@ -35,10 +35,10 @@ dictionary = {
             'NEAR Protocol':'NEAR', 'OKB':'OKB', 'Hedera':'HBAR', 'Internet Computer':'ICP', 'Trust Wallet Token':'TWT',
             'EOS':'EOS', 'MultiversX (Elrond)':'EGLD', 'Terra Classic':'LUNC', 'Flow':'FLOW', 'Huobi Token':'HT',
             'Pax Dollar':'USDP', 'Tezos':'XTZ', 'Chiliz':'CHZ', 'Bitcoin SV':'BSV', 'The Sandbox':'SAND',
-            'Aave':'AAVE', 'Theta Network':'THETA','TrueUSD':'TUSD','USDD':'USDD', 'Axie Infinity':'AXS',
+            'Aave':'AAVE', 'Theta Network':'THETA','TrueUSD':'TUSD','USDD':'USDD', 'Axie Infinity':'AXS','KuCoin Token':'KCS',
             }
 
-def p2e(persiannumber):    
+def p2e(persiannumber):
     number={
         '0':'۰',
         '1':'۱',
@@ -54,7 +54,6 @@ def p2e(persiannumber):
     }
     for i,j in number.items():
         persiannumber=persiannumber.replace(j,i)
-    
     return persiannumber
 
 
@@ -80,8 +79,6 @@ def currencyLeech(RateType):
     result = soup.find_all(attrs={'class':'pointer'})
     currency_info = ['name','price', 'rate','low', 'high', 'updated_date']
     
-
-
     for tag in result :
 
         res = tag.text.strip().split('\n')[0:]
@@ -110,6 +107,8 @@ def currencyLeech(RateType):
         result_dict['requested_date'] = JalaliDateTime.now().isoformat()
         result_list.append(result_dict)
     return result_list
+
+
 
 def cryptoLeech(): 
     crypto_list = list()

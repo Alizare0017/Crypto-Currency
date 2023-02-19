@@ -4,6 +4,7 @@ from django.core.validators import RegexValidator
 from helpers.generator import Token_Generator
 from django.conf import settings
 from rate.models import Plan
+from datetime import datetime, timedelta
 
 class User(AbstractUser):
     COMMON = "COMMON"
@@ -23,7 +24,9 @@ class User(AbstractUser):
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE, null=True)
     request_count = models.IntegerField(default=0)
     month_exp = models.DateTimeField(null=True)
-    day_exp = models.DateTimeField(null=True)
+    day_exp_begin = models.DateTimeField(null=True)
+    day_exp_end = models.DateTimeField(null=True)
+
 
     @property
     def is_planA(self):

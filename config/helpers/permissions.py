@@ -12,14 +12,14 @@ def get_req_and_kwarg(args: tuple, kwargs: dict, kw: str):
     return args[1], kwargs.get(kw)
 
 
-
-def permission_validtor(month_exp,request_count,daily_limit,user):
-    print(month_exp,request_count,daily_limit)
-    if month_exp >= datetime.now(timezone.utc):
-        if request_count < daily_limit:
-            return True
-            
+def permission_validtor(month_exp,request_count,daily_limit,day_exp_end):
+    if month_exp > datetime.now(timezone.utc):
+        if day_exp_end > datetime.now(timezone.utc):
+            if request_count <= daily_limit:
+                return True
+            else:
+                return False
         else:
-            LimitError = "to match request for today"
-            return LimitError
-    return ValueError
+            update_day = "update_day"
+            return update_day
+    return 'Expierd'
