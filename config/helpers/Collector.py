@@ -73,7 +73,9 @@ def currencyLeech(RateType):
         url = "https://www.tgju.org/" + RateType + '-chart'
     else :
         url = "https://www.tgju.org/" + RateType
+    print('Browse ' + url)
     page = browser.get(url)
+    print('wtf')
     soup = BeautifulSoup(page.content, "html.parser")
     result = soup.find_all(attrs={'class':'pointer'})
     currency_info = ['name','price', 'rate','low', 'high', 'updated_date']
@@ -92,7 +94,6 @@ def currencyLeech(RateType):
             time_tuple = s_datetime.timetuple()
             result_dict['time_stamp'] = calendar.timegm(time_tuple)
             result_dict['updated_date'] = date_jalali
-            print(result_dict['updated_date'])
 
         else :
             date1 = result_dict['updated_date'].split()
