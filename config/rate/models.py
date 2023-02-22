@@ -46,7 +46,6 @@ class Crypto(models.Model):
 
 
 class Plan(models.Model):
-
     name = models.CharField(max_length=10)
     daily_request_limit = models.IntegerField()
     exp_date = models.IntegerField()

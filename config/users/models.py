@@ -4,7 +4,6 @@ from django.core.validators import RegexValidator
 from helpers.generator import Token_Generator
 from django.conf import settings
 from rate.models import Plan
-from datetime import datetime, timedelta
 
 class User(AbstractUser):
     COMMON = "COMMON"
