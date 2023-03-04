@@ -101,7 +101,7 @@ class CryptoManage(APIView):
 
 class PlanMange(APIView):
     permission_classes = [IsAdminUser]
-    def get(self,request):
+    def post(self,request):
         plans = Plan.objects.all()
         if plans.exists():
             serializer = PlanSerializer(plans, many=True)

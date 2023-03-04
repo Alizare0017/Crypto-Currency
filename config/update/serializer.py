@@ -20,7 +20,7 @@ class CryptoSerializer(serializers.ModelSerializer):
         model = Crypto
         fields = '__all__'
 
-class PlanSerializer(serializers.Serializer):
+class PlanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Plan

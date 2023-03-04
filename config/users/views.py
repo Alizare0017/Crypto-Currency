@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from helpers.general import response, unauthorized
 from django.shortcuts import get_object_or_404
@@ -12,7 +13,7 @@ from . import serializer as cs, custom_permisson_classes as cp
 
 # Create your views here.
 
-class ListRegisterUserView(APIView):
+class   ListRegisterUserView(APIView):
 
     def post(self, request):
         serializer = cs.RegisterUserSerializer(data=request.data)
@@ -56,3 +57,18 @@ class LogoutView(GenericAPIView):
     def post(self, request, format=None):
         request.user.auth_token.delete()
         return response(detail="Successfully logged out", status_code=status.HTTP_200_OK)
+
+
+class SubscribeView(APIView):
+    def put(self,request):
+        user = User.objects.filter(username=request.data['username'])
+        if user.exists():
+            user.update(plan=request.data['plan'])
+            return Response(status=status.HTTP_200_OK, data={'Info' : 'User updated'})
+        return Response(status=status.HTTP_400_BAD_REQUEST, data={'error' : 'User not found ! '})
+    
+    def post(self,request):
+        user = get_object_or_404(User , username = request.data['username'])
+        serializer = cs.UserSerializer(user)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
+        # return Response(status=status.HTTP_401_UNAUTHORIZED, data={'errors':'User not found ! '})
