@@ -1,5 +1,5 @@
-from  datetime import datetime, timedelta, timezone
-from users.models import User
+from  datetime import datetime, timezone
+from django.utils import timezone
 
 def get_req_and_kwarg(args: tuple, kwargs: dict, kw: str):
     """
@@ -13,8 +13,8 @@ def get_req_and_kwarg(args: tuple, kwargs: dict, kw: str):
 
 
 def permission_validtor(month_exp,request_count,daily_limit,day_exp_end):
-    if month_exp > datetime.now(timezone.utc):
-        if day_exp_end > datetime.now(timezone.utc):
+    if month_exp > timezone.now():
+        if day_exp_end > timezone.now():
             if request_count <= daily_limit:
                 return True
             else:

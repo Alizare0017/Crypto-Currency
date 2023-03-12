@@ -4,7 +4,7 @@ from persiantools.jdatetime import JalaliDateTime, JalaliDate
 import re
 import calendar
 import datetime
-
+from django.utils import timezone
 month_dict = {'فروردین':'01', 'اردیبهشت':'02', 'خرداد':'03', 'تیر':'04', 'مرداد':'05',
          'شهریور':'06', 'مهر':'07', 'آبان':'08', 'آذر':'09', 'دی':'10', 'بهمن':'11', 'اسفند':'12'}
 
@@ -97,8 +97,6 @@ def currencyLeech(RateType):
             print('high')
         if not result_dict.get('updated_date'):
             result_dict['updated_date'] = '00:00:00'
-            print('date')
-        print(result_dict)
         if re.fullmatch(regex,result_dict['updated_date']) :
             date_jalali = str(JalaliDate.today())+' '+p2e(result_dict['updated_date'])
             date_miladi = str(datetime.datetime.today().strftime('%Y-%m-%d'))+' '+p2e(result_dict['updated_date'])
@@ -119,7 +117,7 @@ def currencyLeech(RateType):
         result_dict['price'] = result_dict.get('price').replace(',','')
         result_dict['high'] = result_dict.get('high').replace(',','')
         result_dict['low'] = result_dict.get('low').replace(',','')
-        result_dict['requested_date'] = JalaliDateTime.now().isoformat()
+        result_dict['requested_date'] = timezone.now()
         result_list.append(result_dict)
     return result_list
 

@@ -2,8 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser
 from django.utils import timezone
 from rest_framework import status
-
 from rest_framework.response import Response
+
 from helpers.Collector import currencyLeech, cryptoLeech
 from update.serializer import GoldSerializer, CurrencySerializer, CryptoSerializer, PlanSerializer
 from rate.models import Gold, Currency, Crypto , Plan
@@ -40,8 +40,9 @@ class GoldManage(APIView):
         Gold.objects.all().delete()
         return Response(status=status.HTTP_200_OK)
 
-class CurrencyManage(APIView):
 
+class CurrencyManage(APIView):
+    permission_classes = [IsAdminUser]
     def post(self,request):
         currencyleech = currencyLeech('currency')
         for obj in currencyleech :
@@ -70,7 +71,7 @@ class CurrencyManage(APIView):
 
 
 class CryptoManage(APIView):
-
+    permission_classes = [IsAdminUser]
     def post(self,request):
         cryptoleech = cryptoLeech()
         for obj in cryptoleech :
