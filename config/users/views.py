@@ -16,7 +16,7 @@ from datetime import timedelta
 # Create your views here.
 
 class ListRegisterUserView(APIView):
-
+    permission_classes = [IsAdminUser]
     def post(self, request):
         serializer = cs.RegisterUserSerializer(data=request.data)
         if serializer.is_valid():

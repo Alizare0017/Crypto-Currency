@@ -36,14 +36,14 @@ class CurrencyView(APIView):
 
         if user.exists() :
             permission=permissions.permission_validtor(user[0].month_exp,user[0].request_count,user[0].plan.daily_request_limit,user[0].day_exp_end)
-            if permission=='update_day':
+            if permission=='update_day' :
                 user.update(day_exp_begin= timezone.now(),day_exp_end=timezone.now() +timedelta(days=1))
                 serializer = CurrencySerializer(currency, many=True)
                 user.update(request_count= user[0].request_count+1)
             if permission==True:
                 serializer = CurrencySerializer(currency, many=True)
                 user.update(request_count= user[0].request_count+1)
-                return Response(status=status.HTTP_200_OK, data=serializer.data)
+                return Response(status=status.HTTP_200_OK, data={'code':'200','status':'OK','data':serializer.data})
             elif permission=='Expierd':
                 return Response(status=status.HTTP_400_BAD_REQUEST, data={'error':'Account Expierd ! '})
             else:
@@ -69,12 +69,12 @@ class GoldView(APIView):
                 gold = Gold.objects.all()
                 user.update(request_count= user[0].request_count+1)
                 serializer = GoldSerializer(gold, many=True)
-                return Response(status=status.HTTP_200_OK, data=serializer.data)                
+                return Response(status=status.HTTP_200_OK, data={'code':'200','status':'OK','data':serializer.data})                
             if permission==True :
                 gold = Gold.objects.all()
                 user.update(request_count= user[0].request_count+1)
                 serializer = GoldSerializer(gold, many=True)
-                return Response(status=status.HTTP_200_OK, data=serializer.data)
+                return Response(status=status.HTTP_200_OK, data={'code':'200','status':'OK','data':serializer.data})
             elif permission=='Expierd':
                 return Response(status=status.HTTP_400_BAD_REQUEST, data={'error':'Account Expierd ! '})
             else:
@@ -89,7 +89,7 @@ class CryptoView(APIView):
         crypto = Crypto.objects.all()
 
         if crypto.exists():
-            update_timer.check(Crypto[0].requested_date, self,request)
+            update_timer.check(crypto[0].requested_date, self,request)
 
         else :
             return Response(status=status.HTTP_304_NOT_MODIFIED, data={'error' : 'Databse is empty ! '})
@@ -105,7 +105,7 @@ class CryptoView(APIView):
                 crypto = Crypto.objects.all()
                 serializer = CryptoSerializer(crypto, many=True)
                 user.update(request_count= user[0].request_count+1)
-                return Response(status=status.HTTP_200_OK, data=serializer.data)
+                return Response(status=status.HTTP_200_OK, data={'code':'200','status':'OK','data':serializer.data})
             elif permission=='Expierd':
                 return Response(status=status.HTTP_400_BAD_REQUEST, data={'error':'Account Expierd ! '})
             else:

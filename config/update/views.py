@@ -30,13 +30,13 @@ class GoldManage(APIView):
             if serializer.is_valid():
                 Gold.objects.filter(code=obj['code']).update(price=obj['price'],rate=obj['rate'],high=obj['high'],
                                                                 low=obj['low'],updated_date=obj['updated_date'],
-                                                                requested_date=timezone.now(), time_stamp=obj['time_stamp'])
+                                                                requested_date=timezone.now(), time_stamp=obj['time_stamp'],
+                                                                status=obj['status'])
             else :
                 return Response(status=status.HTTP_400_BAD_REQUEST, data={'errors':serializer.errors})
         return Response(status=status.HTTP_200_OK)
 
-    def delete(self,requst,name):
-
+    def delete(self,requst):
         Gold.objects.all().delete()
         return Response(status=status.HTTP_200_OK)
 
