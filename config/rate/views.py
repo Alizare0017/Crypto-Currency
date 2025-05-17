@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,8 +11,14 @@ from rate.serializer import CurrencySerializer, GoldSerializer, CryptoSerializer
 from .models import Currency, Gold, Crypto
 from helpers import permissions
 from update.views import CurrencyManage
-
+from .tasks import test_func
 # Create your views here.
+
+class CeleryTest(APIView):
+    def post(self,request):
+        test_func.delay()
+        return HttpResponse("Done")
+
 
 class update_timer():
     def check(requested_date,self,request):

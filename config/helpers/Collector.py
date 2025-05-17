@@ -9,7 +9,7 @@ month_dict = {'فروردین':'01', 'اردیبهشت':'02', 'خرداد':'03',
          'شهریور':'06', 'مهر':'07', 'آبان':'08', 'آذر':'09', 'دی':'10', 'بهمن':'11', 'اسفند':'12'}
 
 dictionary = {
-            # Currencies
+            # Currencies    
             'دلار':'USD', 'یورو':'EUR', 'درهم امارات ':'AED', 'پوند انگلیس':'GBP', 'لیر ترکیه ':'TRY',
             'فرانک سوئیس ':'CHF', 'یوان چین ':'CNY', 'ین ژاپن (100 ین) ':'JPY', 'وون کره جنوبی':'KRW', 'دلار کانادا ':'CAD',
             'دلار استرالیا ':'AUD', 'دلار نیوزیلند ':'NZD', 'دلار سنگاپور ':'SGD', 'روپیه هند ':'INR', 'روپیه پاکستان ':'PKR',
@@ -26,9 +26,11 @@ dictionary = {
             'صندوق طلای مفید':'mofidgold', 'صندوق طلای لوتوس':'lotosgold', 'صندوق طلای زر':'rosegold',
             'گرم نقره ۹۹۹':'silver999', 'صندوق طلای گوهر':'gohargold', 'گرم نقره ۹۲۵':'silver925',
             'صندوق طلای گنج':'ganjgold','صندوق طلای نفیس':'nafisgold','صندوق طلای نهال':'nahalgold',
-            'صندوق طلای کهربا':'kahrobagold',
+            'صندوق طلای کهربا':'kahrobagold', 'صندوق طلای عیار':'gc3', 'صندوق طلای زرفام':'gc34',
+            'صندوق طلای مثقال':'gc35', 'صندوق طلای آلتون':'gc36', 'صندوق طلای تابش':'gc37',
+            'صندوق طلای جواهر':'gc38', 'صندوق طلای ناب':'gc39',
             # Crypto
-            'Bitcoin':'BTC', 'Ethereum':'ETH', 'Tether':'USDT', 'BNB':'BNB', 'USD Coin':'USDC', 'Binance USD':'BUSD',
+            'Bitcoin':'BTC', 'Ethereum':'ETH', 'Tether USDt':'USDT', 'BNB':'BNB', 'USD Coin':'USDC', 'Binance USD':'BUSD',
             'XRP':'XRP', 'Dogecoin':'DOGE', 'Cardano':'ADA', 'Polygon':'MATIC', 'Dai':'DAI', 'Polkadot':'DOT',
             'Litecoin':'LTC', 'TRON':'TRX', 'Shiba Inu':'SHIB', 'Solana':'SOL', 'Uniswap':'UNI', 'Avalanche':'AVAX',
             'UNUS SED LEO':'SED', 'Wrapped Bitcoin':'WBTC', 'Chainlink':'LINK', 'Cosmos':'ATOM', 'Monero':'XMR',
@@ -39,7 +41,7 @@ dictionary = {
             'Pax Dollar':'USDP', 'Tezos':'XTZ', 'Chiliz':'CHZ', 'Bitcoin SV':'BSV', 'The Sandbox':'SAND',
             'Aave':'AAVE', 'Theta Network':'THETA','TrueUSD':'TUSD','USDD':'USDD', 'Axie Infinity':'AXS','KuCoin Token':'KCS',
             'Lido DAO':'LDO', 'Aptos':'APT', 'The Graph':'DRT', 'Fantom':'FTM', 'Decentraland':'MANA', 'BitDAO':'BIT',
-            'MultiversX':'EGLD', 'Stacks':'STK', 'Arbitrum':'ABR',
+            'MultiversX':'EGLD', 'Stacks':'STK', 'Arbitrum':'ABR','USDC':'USDC',
 
             }
 
@@ -126,7 +128,7 @@ def currencyLeech(RateType):
         result_dict['high'] = result_dict.get('high').replace(',','')
         result_dict['low'] = result_dict.get('low').replace(',','')
         result_dict['requested_date'] = timezone.now()
-        print(result_dict)
+        #print(result_dict)
         result_list.append(result_dict)
     return result_list
 
