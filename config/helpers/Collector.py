@@ -4,12 +4,12 @@ from persiantools.jdatetime import JalaliDateTime, JalaliDate
 import re
 import calendar
 import datetime
-
+from django.utils import timezone
 month_dict = {'فروردین':'01', 'اردیبهشت':'02', 'خرداد':'03', 'تیر':'04', 'مرداد':'05',
          'شهریور':'06', 'مهر':'07', 'آبان':'08', 'آذر':'09', 'دی':'10', 'بهمن':'11', 'اسفند':'12'}
 
 dictionary = {
-            # Currencies
+            # Currencies    
             'دلار':'USD', 'یورو':'EUR', 'درهم امارات ':'AED', 'پوند انگلیس':'GBP', 'لیر ترکیه ':'TRY',
             'فرانک سوئیس ':'CHF', 'یوان چین ':'CNY', 'ین ژاپن (100 ین) ':'JPY', 'وون کره جنوبی':'KRW', 'دلار کانادا ':'CAD',
             'دلار استرالیا ':'AUD', 'دلار نیوزیلند ':'NZD', 'دلار سنگاپور ':'SGD', 'روپیه هند ':'INR', 'روپیه پاکستان ':'PKR',
@@ -17,16 +17,20 @@ dictionary = {
             'کرون سوئد ':'SEK', 'کرون نروژ ':'NOK', 'ریال عربستان ':'SAR', 'ریال قطر ':'QAR', 'ریال عمان ':'OMR',
             'دینار کویت ':'KWD','دینار بحرین ':'BHD', 'رینگیت مالزی ':'MYR', 'بات تایلند ':'THB', 'دلار هنگ کنگ ':'HKD',
             'روبل روسیه ':'RUB', 'منات آذربایجان ':'AZN', 'درام ارمنستان ':'AMD', 'لاری گرجستان ':'GEL', 'سوم قرقیزستان':'KGS',
-            'سامانی تاجیکستان':'TJS','منات ترکمنستان':'TMT',
+            'سامانی تاجیکستان':'TJS','منات ترکمنستان':'TMT','درهم امارات':'AED','درام ارمنستان':'AMD',
             # Gold
             'طلای 18 عیار / 750':'gold18/750', 'طلای 18 عیار / 740':'gold18/740', 'طلای ۲۴ عیار':'gold24',
             'طلای دست دوم':'secgold', 'آبشده نقدی':'meltedcash', 'آبشده بنکداری ':'meltedbanking',
             'آبشده کمتر از کیلو ':'meltedkilo', 'آبشده معاملاتی':'meltedtransactional', 'مثقال طلا ':'goldmesghal',
             'مثقال / بدون حباب':'bubble', 'حباب آبشده':'melted bubble', 'مثقال / بر مبنای سکه':'coinbased',
             'صندوق طلای مفید':'mofidgold', 'صندوق طلای لوتوس':'lotosgold', 'صندوق طلای زر':'rosegold',
-            'گرم نقره ۹۹۹':'silver', 'صندوق طلای گوهر':'gohargold',
+            'گرم نقره ۹۹۹':'silver999', 'صندوق طلای گوهر':'gohargold', 'گرم نقره ۹۲۵':'silver925',
+            'صندوق طلای گنج':'ganjgold','صندوق طلای نفیس':'nafisgold','صندوق طلای نهال':'nahalgold',
+            'صندوق طلای کهربا':'kahrobagold', 'صندوق طلای عیار':'gc3', 'صندوق طلای زرفام':'gc34',
+            'صندوق طلای مثقال':'gc35', 'صندوق طلای آلتون':'gc36', 'صندوق طلای تابش':'gc37',
+            'صندوق طلای جواهر':'gc38', 'صندوق طلای ناب':'gc39',
             # Crypto
-            'Bitcoin':'BTC', 'Ethereum':'ETH', 'Tether':'USDT', 'BNB':'BNB', 'USD Coin':'USDC', 'Binance USD':'BUSD',
+            'Bitcoin':'BTC', 'Ethereum':'ETH', 'Tether USDt':'USDT', 'BNB':'BNB', 'USD Coin':'USDC', 'Binance USD':'BUSD',
             'XRP':'XRP', 'Dogecoin':'DOGE', 'Cardano':'ADA', 'Polygon':'MATIC', 'Dai':'DAI', 'Polkadot':'DOT',
             'Litecoin':'LTC', 'TRON':'TRX', 'Shiba Inu':'SHIB', 'Solana':'SOL', 'Uniswap':'UNI', 'Avalanche':'AVAX',
             'UNUS SED LEO':'SED', 'Wrapped Bitcoin':'WBTC', 'Chainlink':'LINK', 'Cosmos':'ATOM', 'Monero':'XMR',
@@ -36,6 +40,9 @@ dictionary = {
             'EOS':'EOS', 'MultiversX (Elrond)':'EGLD', 'Terra Classic':'LUNC', 'Flow':'FLOW', 'Huobi Token':'HT',
             'Pax Dollar':'USDP', 'Tezos':'XTZ', 'Chiliz':'CHZ', 'Bitcoin SV':'BSV', 'The Sandbox':'SAND',
             'Aave':'AAVE', 'Theta Network':'THETA','TrueUSD':'TUSD','USDD':'USDD', 'Axie Infinity':'AXS','KuCoin Token':'KCS',
+            'Lido DAO':'LDO', 'Aptos':'APT', 'The Graph':'DRT', 'Fantom':'FTM', 'Decentraland':'MANA', 'BitDAO':'BIT',
+            'MultiversX':'EGLD', 'Stacks':'STK', 'Arbitrum':'ABR','USDC':'USDC',
+
             }
 
 def p2e(persiannumber):
@@ -72,18 +79,28 @@ def currencyLeech(RateType):
         url = "https://www.tgju.org/" + RateType + '-chart'
     else :
         url = "https://www.tgju.org/" + RateType
-    print('Browse ' + url)
     page = browser.get(url)
-    print('wtf')
     soup = BeautifulSoup(page.content, "html.parser")
     result = soup.find_all(attrs={'class':'pointer'})
     currency_info = ['name','price', 'rate','low', 'high', 'updated_date']
     
     for tag in result :
-
         res = tag.text.strip().split('\n')[0:]
+        # status = tag.find('span').attrs['class']
+        pattern = r'<td class="nf"><span class="([^"]*)"'
+        status = re.findall(pattern, str(tag))
         result_dict = dict(zip(currency_info, res))
-        
+        if not result_dict.get('price'):
+            result_dict['price'] = '0'
+        if not result_dict.get('rate'):
+            result_dict['rate'] = '(0.0%)'
+        if not result_dict.get('low'):
+            result_dict['low'] = '0'
+        if not result_dict.get('high'):
+            result_dict['high'] = '0'
+        if not result_dict.get('updated_date'):
+            result_dict['updated_date'] = '00:00:00'
+
         if re.fullmatch(regex,result_dict['updated_date']) :
             date_jalali = str(JalaliDate.today())+' '+p2e(result_dict['updated_date'])
             date_miladi = str(datetime.datetime.today().strftime('%Y-%m-%d'))+' '+p2e(result_dict['updated_date'])
@@ -98,13 +115,20 @@ def currencyLeech(RateType):
             date = date.split()
             result_dict['updated_date'] = str(JalaliDate.today().strftime('%Y'))+'-'+ month_dict[date1[1]]+'-'+ p2e(date1[0]) + ' ' + '00:00:00'
             result_dict['time_stamp'] = timestamp(date[0],date[1],date[2])
-         
+        
+        if status[0] == '':
+            result_dict['status'] = '0'
+        else :
+            result_dict['status'] = status[0]
+        
+
         result_dict['rate'] = re.findall(r"\((.*?)\)", result_dict['rate'])[0]
         result_dict['code'] = dictionary[result_dict['name']]
         result_dict['price'] = result_dict.get('price').replace(',','')
         result_dict['high'] = result_dict.get('high').replace(',','')
         result_dict['low'] = result_dict.get('low').replace(',','')
-        result_dict['requested_date'] = JalaliDateTime.now().isoformat()
+        result_dict['requested_date'] = timezone.now()
+        #print(result_dict)
         result_list.append(result_dict)
     return result_list
 
@@ -122,7 +146,6 @@ def cryptoLeech():
         input_tag = tag.findAll('td')
         crypto_dict = {}
         for attr in input_tag :
-            print(attr.text)
             try :
                 crypto_dict[attr['data-sort-name']] = attr['data-sort-value']
             except :

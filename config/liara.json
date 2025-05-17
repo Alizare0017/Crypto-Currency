@@ -1,0 +1,9 @@
+{
+    "app" : "cryptocurrency",
+    "disks" : [
+        {
+            "name" : "cryptocurrency-db",
+            "mountTo" : "data"
+        }
+    ] 
+}

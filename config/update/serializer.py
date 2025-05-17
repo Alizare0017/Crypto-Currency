@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from rate.models import Currency, Gold, Crypto
+from rate.models import Currency, Gold, Crypto, Plan
 
 
 class CurrencySerializer(serializers.ModelSerializer):
@@ -18,4 +18,10 @@ class CryptoSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Crypto
+        fields = '__all__'
+
+class PlanSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Plan
         fields = '__all__'

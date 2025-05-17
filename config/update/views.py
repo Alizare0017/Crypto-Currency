@@ -2,12 +2,11 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser
 from django.utils import timezone
 from rest_framework import status
-
-
 from rest_framework.response import Response
+
 from helpers.Collector import currencyLeech, cryptoLeech
-from update.serializer import GoldSerializer, CurrencySerializer, CryptoSerializer
-from rate.models import Gold, Currency, Crypto
+from update.serializer import GoldSerializer, CurrencySerializer, CryptoSerializer, PlanSerializer
+from rate.models import Gold, Currency, Crypto , Plan
 # Create your views here.
 
 class GoldManage(APIView):
@@ -31,18 +30,19 @@ class GoldManage(APIView):
             if serializer.is_valid():
                 Gold.objects.filter(code=obj['code']).update(price=obj['price'],rate=obj['rate'],high=obj['high'],
                                                                 low=obj['low'],updated_date=obj['updated_date'],
-                                                                requested_date=timezone.now(), time_stamp=obj['time_stamp'])
+                                                                requested_date=timezone.now(), time_stamp=obj['time_stamp'],
+                                                                status=obj['status'])
             else :
                 return Response(status=status.HTTP_400_BAD_REQUEST, data={'errors':serializer.errors})
         return Response(status=status.HTTP_200_OK)
 
-    def delete(self,requst,name):
-
+    def delete(self,requst):
         Gold.objects.all().delete()
         return Response(status=status.HTTP_200_OK)
 
-class CurrencyManage(APIView):
 
+class CurrencyManage(APIView):
+    permission_classes = [IsAdminUser]
     def post(self,request):
         currencyleech = currencyLeech('currency')
         for obj in currencyleech :
@@ -71,7 +71,7 @@ class CurrencyManage(APIView):
 
 
 class CryptoManage(APIView):
-
+    permission_classes = [IsAdminUser]
     def post(self,request):
         cryptoleech = cryptoLeech()
         for obj in cryptoleech :
@@ -98,3 +98,13 @@ class CryptoManage(APIView):
     def delete(self,request):
         Crypto.objects.all().delete()
         return Response(status=status.HTTP_200_OK)
+    
+
+class PlanMange(APIView):
+    permission_classes = [IsAdminUser]
+    def post(self,request):
+        plans = Plan.objects.all()
+        if plans.exists():
+            serializer = PlanSerializer(plans, many=True)
+            return Response(status=status.HTTP_200_OK, data=serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST, data={'error' : 'No plan exists !'})

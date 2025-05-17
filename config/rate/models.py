@@ -6,6 +6,7 @@ class Currency(models.Model):
     code = models.CharField(max_length=6)
     price = models.IntegerField()
     rate = models.CharField(max_length=20)
+    status = models.CharField(max_length=4,null=True)
     high = models.IntegerField()
     low = models.IntegerField()
     updated_date = models.DateTimeField()
@@ -20,6 +21,7 @@ class Gold(models.Model):
     code = models.CharField(max_length=20)
     price = models.IntegerField()
     rate = models.CharField(max_length=20)
+    status = models.CharField(max_length=4,null=True)
     high = models.IntegerField()
     low = models.IntegerField()
     updated_date = models.DateTimeField()
@@ -46,7 +48,6 @@ class Crypto(models.Model):
 
 
 class Plan(models.Model):
-
     name = models.CharField(max_length=10)
     daily_request_limit = models.IntegerField()
     exp_date = models.IntegerField()

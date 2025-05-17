@@ -5,15 +5,13 @@ from helpers.regex_validators import validators
 
 
 class UserSerializer(serializers.ModelSerializer):
-    is_common = serializers.CharField(default=User.is_common)
-    is_permium = serializers.CharField(default=User.is_planA)
-    is_permium = serializers.CharField(default=User.is_planB)
+    # is_common = serializers.CharField(default=User.is_common)
+    # is_permium = serializers.CharField(default=User.is_planA)
+    # is_permium = serializers.CharField(default=User.is_planB)
 
     class Meta:
         model = User
-        exclude = ["user_permissions", "groups"]
-        extra_kwargs = {"password": {"write_only": True}}
-
+        fields = '__all__'
 
 class _UserActionBase(serializers.Serializer):
 
@@ -28,7 +26,7 @@ class _UserActionBase(serializers.Serializer):
 
 
 class RegisterUserSerializer(_UserActionBase):
-    pass
+    password = serializers.CharField()
 
 
 class LoginSerializer(_UserActionBase):
@@ -44,7 +42,6 @@ class UpdateUserSerializer(serializers.Serializer):
     last_name = serializers.CharField(required=False)
     email = serializers.EmailField(required=False)
     phone = serializers.CharField(validators=[validators.phone], required=False)
-    members = serializers.IntegerField(required=False, min_value=1)
 
 
 
